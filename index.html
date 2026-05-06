@@ -145,11 +145,12 @@
           </div>
           <div class="form-group">
             <label>Teléfono *</label>
-            <input type="tel" id="custPhone" name="Telefono" placeholder="787-" required>
+            <input type="tel" id="custPhone" name="Telefono" placeholder="" required>
           </div>
           <div class="form-group">
-              <label>Tipo de Evento</label>
-              <select id="custEventType" name="Tipo_Evento">
+              <label>Tipo de Evento *</label>
+              <select id="custEventType" name="Tipo_Evento" required>
+                  <option value="" disabled selected>Selecciona</option>
                   <option value="Cumpleaños">Cumpleaños</option>
                   <option value="Boda">Boda</option>
                   <option value="Corporativo">Corporativo</option>
@@ -248,7 +249,15 @@
           </div>
           <div class="form-group">
               <label>Cantidad de Horas *</label>
-              <input type="number" id="custHours" name="Duracion" placeholder="Ej. 3" required>
+              <select id="custHours" name="Duracion" required>
+                  <option value="" disabled selected>Selecciona</option>
+                  <option value="1 Hora">1 Hora</option>
+                  <option value="2 Horas">2 Horas</option>
+                  <option value="3 Horas">3 Horas</option>
+                  <option value="4 Horas">4 Horas</option>
+                  <option value="5 Horas">5 Horas</option>
+                  <option value="6+ Horas">6+ Horas</option>
+              </select>
           </div>
           <div class="form-group">
               <label>Cantidad de Pizzas</label>
@@ -282,7 +291,7 @@
 
   <div id="thanksMsg" class="success-msg">
     <h2>¡Gracias por contactar!</h2>
-    <p>Hemos recibido tu información en Formspree. Te contactaremos pronto.</p>
+    <p>Hemos recibido tu información. Te contactaremos pronto.</p>
     <button onclick="window.location.reload()" style="background:none; border:1px solid var(--fire); color:var(--fire); padding:10px 20px; margin-top:20px; cursor:pointer; border-radius:8px;">Hacer otra reserva</button>
   </div>
 </section>
@@ -314,7 +323,7 @@
                         .map(cb => cb.value).join(', ');
 
     // Validación obligatoria
-    if (!name || !phone || !town || !email || !date || !hours) {
+    if (!name || !phone || !town || !email || !date || !hours || !event) {
       alert("Por favor completa los campos obligatorios (*).");
       return;
     }
