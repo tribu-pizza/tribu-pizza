@@ -141,15 +141,15 @@
       <div class="form-grid">
           <div class="form-group">
             <label>Nombre *</label>
-            <input type="text" id="custName" required>
+            <input type="text" id="custName" name="Nombre" required>
           </div>
           <div class="form-group">
             <label>Teléfono *</label>
-            <input type="tel" id="custPhone" placeholder="787-" required>
+            <input type="tel" id="custPhone" name="Telefono" placeholder="787-" required>
           </div>
           <div class="form-group">
               <label>Tipo de Evento</label>
-              <select id="custEventType">
+              <select id="custEventType" name="Tipo_Evento">
                   <option value="Cumpleaños">Cumpleaños</option>
                   <option value="Boda">Boda</option>
                   <option value="Corporativo">Corporativo</option>
@@ -160,7 +160,7 @@
           </div>
           <div class="form-group">
               <label>Pueblo *</label>
-              <select id="custTown" required>
+              <select id="custTown" name="Pueblo" required>
                   <option value="" disabled selected>Selecciona un pueblo</option>
                   <option value="Adjuntas">Adjuntas</option>
                   <option value="Aguada">Aguada</option>
@@ -244,36 +244,36 @@
           </div>
           <div class="form-group">
             <label>Fecha y Hora *</label>
-            <input type="datetime-local" id="custDate" required>
+            <input type="datetime-local" id="custDate" name="Fecha_Hora" required>
           </div>
           <div class="form-group">
               <label>Cantidad de Horas *</label>
-              <input type="number" id="custHours" placeholder="Ej. 3" required>
+              <input type="number" id="custHours" name="Duracion" placeholder="Ej. 3" required>
           </div>
           <div class="form-group">
               <label>Cantidad de Pizzas</label>
-              <input type="number" id="custPizzaQty" placeholder="Ej. 50">
+              <input type="number" id="custPizzaQty" name="Cantidad_Pizzas" placeholder="Ej. 50">
           </div>
           <div class="form-group">
               <label>Email *</label>
-              <input type="email" id="custEmail" required>
+              <input type="email" id="custEmail" name="_replyto" required>
           </div>
           <div class="form-group full">
               <label>Variedades (Favoritas)</label>
               <div class="pizza-selector">
-                  <label class="check-item"><input type="checkbox" value="Margherita"> Margherita</label>
-                  <label class="check-item"><input type="checkbox" value="Honey Pepperoni"> Honey Pepperoni</label>
-                  <label class="check-item"><input type="checkbox" value="Pepperoni"> Pepperoni</label>
-                  <label class="check-item"><input type="checkbox" value="Chicken"> Chicken</label>
-                  <label class="check-item"><input type="checkbox" value="Veggie"> Veggie</label>
-                  <label class="check-item"><input type="checkbox" value="Bacon"> Bacon</label>
-                  <label class="check-item"><input type="checkbox" value="Cheddar Cheese"> Cheddar Cheese</label>
-                  <label class="check-item"><input type="checkbox" value="Meat Lovers"> Meat Lovers</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Margherita"> Margherita</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Honey Pepperoni"> Honey Pepperoni</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Pepperoni"> Pepperoni</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Chicken"> Chicken</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Veggie"> Veggie</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Bacon"> Bacon</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Cheddar Cheese"> Cheddar Cheese</label>
+                  <label class="check-item"><input type="checkbox" name="Sabor" value="Meat Lovers"> Meat Lovers</label>
               </div>
           </div>
           <div class="form-group full">
             <label>Notas Especiales</label>
-            <textarea id="custNotes" rows="3"></textarea>
+            <textarea id="custNotes" name="Mensaje" rows="3"></textarea>
           </div>
       </div>
       <button type="button" class="submit-btn" onclick="sendOrder()">🔥 Enviar Solicitud</button>
@@ -282,7 +282,7 @@
 
   <div id="thanksMsg" class="success-msg">
     <h2>¡Gracias por contactar!</h2>
-    <p>Hemos recibido tu información. Te contactaremos pronto.</p>
+    <p>Hemos recibido tu información en Formspree. Te contactaremos pronto.</p>
     <button onclick="window.location.reload()" style="background:none; border:1px solid var(--fire); color:var(--fire); padding:10px 20px; margin-top:20px; cursor:pointer; border-radius:8px;">Hacer otra reserva</button>
   </div>
 </section>
@@ -299,6 +299,8 @@
 <script>
   async function sendOrder() {
     const btn = document.querySelector('.submit-btn');
+    
+    // Captura de valores
     const name = document.getElementById('custName').value;
     const phone = document.getElementById('custPhone').value;
     const email = document.getElementById('custEmail').value;
@@ -308,8 +310,10 @@
     const qty = document.getElementById('custPizzaQty').value;
     const event = document.getElementById('custEventType').value;
     const notes = document.getElementById('custNotes').value;
-    const pizzas = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value).join(', ');
+    const pizzas = Array.from(document.querySelectorAll('input[name="Sabor"]:checked'))
+                        .map(cb => cb.value).join(', ');
 
+    // Validación obligatoria
     if (!name || !phone || !town || !email || !date || !hours) {
       alert("Por favor completa los campos obligatorios (*).");
       return;
@@ -318,33 +322,42 @@
     btn.disabled = true;
     btn.innerText = "Enviando...";
 
-    const formData = {
-      Nombre: name,
-      Tel: phone,
-      Email: email,
-      Evento: event,
-      Pueblo: town,
-      Fecha: date,
-      Horas: hours,
-      Cantidad: qty,
-      Sabores: pizzas,
-      Notas: notes
-    };
+    // FormData para asegurar compatibilidad total con Formspree
+    const data = new FormData();
+    data.append('Nombre', name);
+    data.append('Telefono', phone);
+    data.append('Email', email);
+    data.append('Pueblo', town);
+    data.append('Evento', event);
+    data.append('Fecha_Evento', date);
+    data.append('Horas_Servicio', hours);
+    data.append('Cantidad_Pizzas', qty);
+    data.append('Sabores_Elegidos', pizzas);
+    data.append('Notas', notes);
 
     try {
-      await fetch('https://formspree.io/f/xaqvojwn', {
+      const response = await fetch('https://formspree.io/f/xaqvojwn', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData)
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
-      
-      const whatsappMsg = `*RESERVA TRIBU PIZZA*\n\n*Cliente:* ${name}\n*Tel:* ${phone}\n*Pueblo:* ${town}\n*Evento:* ${event}\n*Fecha:* ${date}\n*Horas:* ${hours}\n*Cantidad:* ${qty}\n*Sabores:* ${pizzas}\n*Notas:* ${notes}`;
-      window.open(`https://wa.me/17874526292?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
 
-      document.getElementById('bookingFormContainer').style.display = 'none';
-      document.getElementById('thanksMsg').style.display = 'block';
-    } catch (e) {
-      alert("Error al enviar.");
+      if (response.ok) {
+        // Éxito: Abrir WhatsApp y mostrar confirmación
+        const whatsappMsg = `*RESERVA TRIBU PIZZA*\n\n*Cliente:* ${name}\n*Tel:* ${phone}\n*Pueblo:* ${town}\n*Evento:* ${event}\n*Fecha:* ${date}\n*Horas:* ${hours}\n*Cantidad:* ${qty}\n*Sabores:* ${pizzas}\n*Notas:* ${notes}`;
+        window.open(`https://wa.me/17874526292?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
+
+        document.getElementById('bookingFormContainer').style.display = 'none';
+        document.getElementById('thanksMsg').style.display = 'block';
+      } else {
+        alert("Hubo un error al enviar al servidor. Inténtalo de nuevo.");
+        btn.disabled = false;
+        btn.innerText = "🔥 Enviar Solicitud";
+      }
+    } catch (error) {
+      alert("Error de conexión. Inténtalo más tarde.");
       btn.disabled = false;
       btn.innerText = "🔥 Enviar Solicitud";
     }
