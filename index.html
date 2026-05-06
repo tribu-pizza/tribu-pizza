@@ -11,7 +11,7 @@
   <style>
     :root {
       --fire: #E8420A; --ember: #FF7043; --gold: #F5A623;
-      --cream: #E5D1B8; /* Color ajustado para armonizar con el logo fffaadaf-3092-4c78-aad8-5e191220adbb.jpeg */
+      --cream: #E5D1B8;
       --dark: #1A0E05; --charcoal: #2C1A0E;
       --smoke: #7A6455; --light-smoke: #C4B5A5;
     }
@@ -117,7 +117,6 @@
     <div class="event-card"><span>💃</span><h3>Quinceañeros</h3></div>
     <div class="event-card"><span>🏊‍♂️</span><h3>Pool Party</h3></div>
     <div class="event-card"><span>🎉</span><h3>Fiestas</h3></div>
-    <div class="event-card"><span>🏠</span><h3>Privados</h3></div>
   </div>
 </section>
 
@@ -129,7 +128,7 @@
     <div class="pizza-card"><span class="pizza-icon">🍕</span><div><h3>Pepperoni</h3><p>Salsa de tomate, mozzarella y lascas de pepperoni.</p></div></div>
     <div class="pizza-card"><span class="pizza-icon">🍗</span><div><h3>Chicken</h3><p>Salsa de tomate, pollo, cebolla lila y mozzarella.</p></div></div>
     <div class="pizza-card"><span class="pizza-icon">🥦</span><div><h3>Veggie</h3><p>Pimientos, setas, aceitunas y mozzarella.</p></div></div>
-    <div class="pizza-card"><span class="pizza-icon"> Bacon</span><div><h3>Bacon</h3><p>Salsa de tomate, mozzarella y trozos de tocineta.</p></div></div>
+    <div class="pizza-card"><span class="pizza-icon">🥓</span><div><h3>Bacon</h3><p>Salsa de tomate, mozzarella y trozos de tocineta.</p></div></div>
     <div class="pizza-card"><span class="pizza-icon">🧀</span><div><h3>Cheddar Cheese</h3><p>Nuestra clásica salsa de tomate con queso de papa.</p></div></div>
     <div class="pizza-card"><span class="pizza-icon">🍖</span><div><h3>Meat Lovers</h3><p>Pepperoni, salchicha, tocineta y mozzarella.</p></div></div>
   </div>
@@ -145,7 +144,7 @@
             <input type="text" id="custName" required>
           </div>
           <div class="form-group">
-            <label>WhatsApp *</label>
+            <label>Teléfono *</label>
             <input type="tel" id="custPhone" placeholder="787-" required>
           </div>
           <div class="form-group">
@@ -156,7 +155,6 @@
                   <option value="Corporativo">Corporativo</option>
                   <option value="Baby Shower">Baby Shower</option>
                   <option value="Pool Party">Pool Party</option>
-                  <option value="Fiesta Privada">Fiesta Privada</option>
                   <option value="Otro">Otro</option>
               </select>
           </div>
@@ -167,6 +165,10 @@
           <div class="form-group">
             <label>Fecha y Hora *</label>
             <input type="datetime-local" id="custDate" required>
+          </div>
+          <div class="form-group">
+              <label>Cantidad de Horas *</label>
+              <input type="number" id="custHours" placeholder="Ej. 3" required>
           </div>
           <div class="form-group">
               <label>Cantidad de Pizzas</label>
@@ -222,12 +224,14 @@
     const email = document.getElementById('custEmail').value;
     const town = document.getElementById('custTown').value;
     const date = document.getElementById('custDate').value;
+    const hours = document.getElementById('custHours').value;
     const qty = document.getElementById('custPizzaQty').value;
     const event = document.getElementById('custEventType').value;
     const notes = document.getElementById('custNotes').value;
     const pizzas = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value).join(', ');
 
-    if (!name || !phone || !town || !email || !date) {
+    // Validación: nombre, teléfono, pueblo, email, fecha y HORAS son requeridos
+    if (!name || !phone || !town || !email || !date || !hours) {
       alert("Por favor completa los campos obligatorios (*).");
       return;
     }
@@ -242,6 +246,7 @@
       Evento: event,
       Pueblo: town,
       Fecha: date,
+      Horas: hours,
       Cantidad: qty,
       Sabores: pizzas,
       Notas: notes
@@ -254,7 +259,7 @@
         body: JSON.stringify(formData)
       });
       
-      const whatsappMsg = `*RESERVA TRIBU PIZZA*\n\n*Cliente:* ${name}\n*Tel:* ${phone}\n*Pueblo:* ${town}\n*Evento:* ${event}\n*Fecha:* ${date}\n*Cantidad:* ${qty}\n*Sabores:* ${pizzas}\n*Notas:* ${notes}`;
+      const whatsappMsg = `*RESERVA TRIBU PIZZA*\n\n*Cliente:* ${name}\n*Tel:* ${phone}\n*Pueblo:* ${town}\n*Evento:* ${event}\n*Fecha:* ${date}\n*Horas:* ${hours}\n*Cantidad:* ${qty}\n*Sabores:* ${pizzas}\n*Notas:* ${notes}`;
       window.open(`https://wa.me/17874526292?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
 
       document.getElementById('bookingFormContainer').style.display = 'none';
